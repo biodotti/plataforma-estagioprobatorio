@@ -1,74 +1,88 @@
 import React from 'react';
-import { Search, Filter, BookOpen } from 'lucide-react';
+import { Search, Filter, BookOpen, Edit } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../../contexts/AuthContext';
 
 const CourseList = () => {
-    const courses = [
-        {
-            id: 1,
-            title: 'Metodologias Ativas na Prática',
-            category: 'Pedagogia',
-            duration: '40h',
-            image: 'https://images.unsplash.com/photo-1544377193-33dcf4d68fb5?auto=format&fit=crop&q=80&w=400',
-            description: 'Aprenda a implementar metodologias ativas em sala de aula.'
-        },
-        {
-            id: 2,
-            title: 'Inclusão Escolar e Diversidade',
-            category: 'Educação Especial',
-            duration: '60h',
-            image: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&q=80&w=400',
-            description: 'Estratégias para promover a inclusão escolar efetiva.'
-        },
-        {
-            id: 3,
-            title: 'Tecnologias Digitais na Educação',
-            category: 'Tecnologia',
-            duration: '30h',
-            image: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&q=80&w=400',
-            description: 'Ferramentas digitais para potencializar o ensino.'
-        }
-    ];
+  const { isProfessor, isAdmin } = useAuth();
+  const canEdit = isProfessor || isAdmin;
 
-    return (
-        <div className="course-list-page">
-            <div className="page-header">
-                <h1 className="page-title">Catálogo de Cursos</h1>
-                <div className="filters">
-                    <div className="search-input">
-                        <Search size={20} />
-                        <input type="text" placeholder="Buscar cursos..." />
-                    </div>
-                    <button className="filter-btn">
-                        <Filter size={20} />
-                        Filtrar
-                    </button>
-                </div>
+  const courses = [
+    {
+      id: 1,
+      title: 'Metodologias Ativas na Prática',
+      category: 'Pedagogia',
+      duration: '40h',
+      image: 'https://images.unsplash.com/photo-1544377193-33dcf4d68fb5?auto=format&fit=crop&q=80&w=400',
+      description: 'Aprenda a implementar metodologias ativas em sala de aula.'
+    },
+    {
+      id: 2,
+      title: 'Inclusão Escolar e Diversidade',
+      category: 'Educação Especial',
+      duration: '60h',
+      image: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&q=80&w=400',
+      description: 'Estratégias para promover a inclusão escolar efetiva.'
+    },
+    {
+      id: 3,
+      title: 'Tecnologias Digitais na Educação',
+      category: 'Tecnologia',
+      duration: '30h',
+      image: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&q=80&w=400',
+      description: 'Ferramentas digitais para potencializar o ensino.'
+    }
+  ];
+
+  return (
+    <div className="course-list-page">
+      <div className="page-header">
+        <h1 className="page-title">Catálogo de Cursos</h1>
+        <div className="filters">
+          <div className="search-input">
+            <Search size={20} />
+            <input type="text" placeholder="Buscar cursos..." />
+          </div>
+          <button className="filter-btn">
+            <Filter size={20} />
+            Filtrar
+          </button>
+        </div>
+      </div>
+
+      <div className="courses-grid">
+        {courses.map(course => (
+          <Link to={`/courses/${course.id}`} key={course.id} className="course-card">
+            <div className="card-image-wrapper">
+              <img src={course.image} alt={course.title} />
+              <span className="category-badge">{course.category}</span>
             </div>
-
-            <div className="courses-grid">
-                {courses.map(course => (
-                    <Link to={`/courses/${course.id}`} key={course.id} className="course-card">
-                        <div className="card-image-wrapper">
-                            <img src={course.image} alt={course.title} />
-                            <span className="category-badge">{course.category}</span>
-                        </div>
-                        <div className="card-content">
-                            <h3>{course.title}</h3>
-                            <p>{course.description}</p>
-                            <div className="card-footer">
-                                <span className="duration">
-                                    <BookOpen size={16} />
-                                    {course.duration}
-                                </span>
-                                <span className="enroll-link">Saiba mais →</span>
-                            </div>
-                        </div>
-                    </Link>
-                ))}
+            <div className="card-content">
+              <div className="card-header-flex">
+                <h3>{course.title}</h3>
+                {canEdit && (
+                  <button className="edit-btn" onClick={(e) => {
+                    e.preventDefault();
+                    // Handle edit
+                  }}>
+                    <Edit size={16} />
+                  </button>
+                )}
+              </div>
+              <p>{course.description}</p>
+              <div className="card-footer">
+                <span className="duration">
+                  <BookOpen size={16} />
+                  {course.duration}
+                </span>
+                <span className="enroll-link">Saiba mais →</span>
+              </div>
             </div>
+          </Link>
+        ))}
+      </div>
 
-            <style>{`
+      <style>{`
         .page-header {
           display: flex;
           justify-content: space-between;
@@ -159,11 +173,29 @@ const CourseList = () => {
           flex-direction: column;
         }
 
-        .card-content h3 {
+        .card-header-flex {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-start;
+          margin-bottom: 0.5rem;
+        }
+
+        .card-header-flex h3 {
           font-size: 1.25rem;
           font-weight: 600;
-          margin-bottom: 0.5rem;
           color: var(--text-primary);
+          margin: 0;
+        }
+
+        .edit-btn {
+          padding: 0.25rem;
+          color: var(--text-secondary);
+          border-radius: 0.25rem;
+        }
+
+        .edit-btn:hover {
+          background-color: var(--background-color);
+          color: var(--primary-color);
         }
 
         .card-content p {
@@ -196,8 +228,8 @@ const CourseList = () => {
           font-size: 0.875rem;
         }
       `}</style>
-        </div>
-    );
+    </div>
+  );
 };
 
 export default CourseList;

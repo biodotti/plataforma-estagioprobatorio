@@ -1,28 +1,37 @@
 import React from 'react';
-import { Bell, Search, User } from 'lucide-react';
+import { Bell, Search, User, LogOut } from 'lucide-react';
+import { useAuth } from '../../contexts/AuthContext';
 
 const Header = () => {
-    return (
-        <header className="header">
-            <div className="search-bar">
-                <Search size={20} className="search-icon" />
-                <input type="text" placeholder="Buscar cursos, materiais..." />
-            </div>
+  const { currentUser, logout, userRole } = useAuth();
 
-            <div className="header-actions">
-                <button className="icon-btn">
-                    <Bell size={20} />
-                    <span className="notification-badge">3</span>
-                </button>
-                <div className="user-profile">
-                    <div className="avatar">
-                        <User size={20} />
-                    </div>
-                    <span className="user-name">Professor(a) Silva</span>
-                </div>
-            </div>
+  return (
+    <header className="header">
+      <div className="search-bar">
+        <Search size={20} className="search-icon" />
+        <input type="text" placeholder="Buscar cursos, materiais..." />
+      </div>
 
-            <style>{`
+      <div className="header-actions">
+        <button className="icon-btn">
+          <Bell size={20} />
+          <span className="notification-badge">3</span>
+        </button>
+        <div className="user-profile">
+          <div className="avatar">
+            <User size={20} />
+          </div>
+          <div className="user-info">
+            <span className="user-name">{currentUser?.displayName || 'Usuário'}</span>
+            <span className="user-role">{userRole === 'admin' ? 'Administrador' : userRole === 'professor' ? 'Professor' : 'Estudante'}</span>
+          </div>
+          <button onClick={logout} className="logout-btn" title="Sair">
+            <LogOut size={18} />
+          </button>
+        </div>
+      </div>
+
+      <style>{`
         .header {
           height: 70px;
           background-color: var(--surface-color);
@@ -95,7 +104,6 @@ const Header = () => {
           display: flex;
           align-items: center;
           gap: 0.75rem;
-          cursor: pointer;
         }
 
         .avatar {
@@ -109,13 +117,38 @@ const Header = () => {
           color: var(--text-secondary);
         }
 
+        .user-info {
+          display: flex;
+          flex-direction: column;
+        }
+
         .user-name {
           font-weight: 500;
           color: var(--text-primary);
+          font-size: 0.875rem;
+        }
+
+        .user-role {
+          font-size: 0.75rem;
+          color: var(--text-secondary);
+          text-transform: capitalize;
+        }
+
+        .logout-btn {
+          color: var(--text-secondary);
+          padding: 0.5rem;
+          border-radius: 0.5rem;
+          margin-left: 0.5rem;
+          transition: all 0.2s;
+        }
+
+        .logout-btn:hover {
+          background-color: #fee2e2;
+          color: #ef4444;
         }
       `}</style>
-        </header>
-    );
+    </header>
+  );
 };
 
 export default Header;

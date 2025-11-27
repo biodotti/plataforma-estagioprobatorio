@@ -9,7 +9,17 @@ Plataforma de formação continuada para professores da rede estadual do Paraná
 - **Roteamento**: React Router DOM
 - **Ícones**: Lucide React
 - **IA**: Google Gemini API
-- **Backend/Auth**: Firebase (Configurado)
+- **Backend/Auth**: Firebase (Auth + Firestore)
+
+## 🔐 Autenticação e Níveis de Acesso
+
+O sistema possui controle de acesso baseado em funções (RBAC):
+
+- **Admin**: Acesso total ao sistema.
+- **Professor**: Pode editar seus cursos.
+- **Estudante**: Acesso apenas para visualização e estudo.
+
+A autenticação é feita via **Google Login**. Os papéis são gerenciados na coleção `users` do Firestore.
 
 ## 🛠️ Instalação e Execução
 
