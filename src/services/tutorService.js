@@ -8,7 +8,8 @@ const genAI = new GoogleGenerativeAI(API_KEY);
 
 export const getTutorResponse = async (userMessage) => {
     try {
-        const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+        // Using gemini-1.5-flash as requested (fastest and most cost-effective)
+        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
         const prompt = `
       Você é um Tutor Inteligente especializado em pedagogia e formação de professores.
@@ -23,6 +24,6 @@ export const getTutorResponse = async (userMessage) => {
         return response.text();
     } catch (error) {
         console.error("Error calling Gemini API:", error);
-        return "Desculpe, estou tendo dificuldades para processar sua solicitação no momento.";
+        return "Desculpe, estou tendo dificuldades para processar sua solicitação no momento. Verifique se a chave da API está correta e se o modelo gemini-1.5-flash está disponível.";
     }
 };
