@@ -2,14 +2,14 @@ import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
-// TODO: Replace with actual environment variables or configuration
+// Your web app's Firebase configuration
 const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_PROJECT_ID.appspot.com",
-    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-    appId: "YOUR_APP_ID"
+    apiKey: "AIzaSyCyQT1Owi5-_F9HOi5xkTmZSWaAtQ3UIZQ",
+    authDomain: "plataforma-ep.firebaseapp.com",
+    projectId: "plataforma-ep",
+    storageBucket: "plataforma-ep.firebasestorage.app",
+    messagingSenderId: "167186069204",
+    appId: "1:167186069204:web:f95eee755e2be4c8a1ad41"
 };
 
 const app = initializeApp(firebaseConfig);
