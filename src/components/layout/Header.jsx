@@ -23,7 +23,11 @@ const Header = () => {
           </div>
           <div className="user-info">
             <span className="user-name">{currentUser?.displayName || 'Usuário'}</span>
-            <span className="user-role">{userRole === 'admin' ? 'Administrador' : userRole === 'professor' ? 'Professor' : 'Estudante'}</span>
+            <span className="user-role">
+              {userRole === 'admin' ? 'Administrador' :
+                userRole === 'tutor' ? 'Tutor' :
+                  userRole === 'formador' ? 'Formador' : 'Cursista'}
+            </span>
           </div>
           <button onClick={logout} className="logout-btn" title="Sair">
             <LogOut size={18} />

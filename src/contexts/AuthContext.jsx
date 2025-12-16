@@ -23,7 +23,7 @@ export function AuthProvider({ children }) {
             const result = await signInWithPopup(auth, googleProvider);
             const user = result.user;
 
-            // Check if user exists in Firestore, if not create with default role 'student'
+            // Check if user exists in Firestore, if not create with default role 'cursista'
             const userRef = doc(db, 'users', user.uid);
             const userSnap = await getDoc(userRef);
 
@@ -31,10 +31,10 @@ export function AuthProvider({ children }) {
                 await setDoc(userRef, {
                     email: user.email,
                     name: user.displayName,
-                    role: 'student', // Default role
+                    role: 'cursista', // Default role
                     createdAt: new Date().toISOString()
                 });
-                setUserRole('student');
+                setUserRole('cursista');
             } else {
                 setUserRole(userSnap.data().role);
             }
@@ -62,7 +62,7 @@ export function AuthProvider({ children }) {
                     setUserRole(userSnap.data().role);
                 } else {
                     // Fallback if document doesn't exist but user is auth'd (shouldn't happen with login flow)
-                    setUserRole('student');
+                    setUserRole('cursista');
                 }
             } else {
                 setUserRole(null);
@@ -80,8 +80,9 @@ export function AuthProvider({ children }) {
         loginWithGoogle,
         logout,
         isAdmin: userRole === 'admin',
-        isProfessor: userRole === 'professor' || userRole === 'admin',
-        isStudent: userRole === 'student'
+        isTutor: userRole === 'tutor',
+        isFormador: userRole === 'formador',
+        isCursista: userRole === 'cursista'
     };
 
     return (
